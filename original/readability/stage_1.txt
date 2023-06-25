@@ -1,0 +1,32 @@
+public static void main(String[] args) {
+   String text = null;
+        String pathToFile = args[0];
+        File file = new File(pathToFile);
+
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNext()) {
+                text = scanner.nextLine();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("No file found: " + pathToFile);
+        }
+
+        numberOfChars(text);
+        String[] words = text.split("\\s+");
+        String[] sentences = text.split("[.?!]");
+        int numSents = sentences.length;
+        int numWords = words.length;
+        double ari = 4.71 * ((double) numChars / numWords) + 0.5 * ((double) numWords / numSents) - 21.43;
+        double score = Math.ceil(ari);
+        ageGroup((int) score);
+
+        String output = """
+                Words: %d
+                Sentences: %d
+                Characters: %d
+                The score is: %.2f
+                This text should be understood by %s year-olds.
+                """.formatted(numWords, numSents, numChars, ari, yearOlds);
+
+        System.out.println(output);
+    }
